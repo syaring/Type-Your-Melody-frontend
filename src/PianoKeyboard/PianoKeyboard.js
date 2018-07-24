@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './PianoKeyboard.css';
-import PianoKey from './Data/PianoKey';
+import _ from 'lodash';
+import PianoKey from '../Data/PianoKey';
 
 var instrument;
 class PianoKeyboard extends Component {
@@ -10,16 +11,17 @@ class PianoKeyboard extends Component {
     this.state = {
       octave: 4,
       duration: 2,
-      sound: 'piano'
+      sound: 'piano',
+      addClass: false
     }
   }
 
   componentDidMount = () => {
-    window.addEventListener('keypress', this.keyMapping.bind(this));
+    window.addEventListener('keyup', this.keyMapping.bind(this));
   }
 
   componentWillUnmount = () => {
-    window.removeEventListener('keypress', this.keyMapping.bind(this));
+    window.removeEventListener('keyup', this.keyMapping.bind(this));
   }
 
   playSound(note, octave, ev) {
@@ -68,16 +70,20 @@ class PianoKeyboard extends Component {
       case ';': this.playSound('A#', this.state.octave + 1); break;
       case '/': this.playSound('B', this.state.octave + 1); break;
       
+      case '=': this.setState({octave: this.state.octave + 1}); break;
+      case '-': this.setState({octave: this.state.octave - 1}); break;
     }
   }
 
   render() {
     let keys = [];
 
-    for (var i = this.state.octave - 1 ; i < this.state.octave + 2; i ++) {
+    for (var i = this.state.octave - 1 ; i <= this.state.octave + 1; i ++) {
       PianoKey.map((key, index) => {
         keys.push(
-          <li className={`${key.color} ${key.value}`}
+          <li
+            key={`${key.note}`+'/'+`${i}`}
+            className={`${key.color} ${key.value}`}
             onMouseDown={this.playSound.bind(this, key.note, i)}
           >
           </li>
@@ -89,26 +95,6 @@ class PianoKeyboard extends Component {
         <ul className="set">
           {keys}
         </ul>
-        {/* <ul className="set">
-          <li className="white c"
-            data-key='c'
-            onClick={this.playSound.bind(this, 'C', this.state.octave, this.state.duration)}>
-          </li>
-          <li className="black cs"
-            onClick={this.playSound.bind(this, 'C#', this.state.octave, this.state.duration)}
-            onKeyDown={this.keyMapping.bind(this)}>
-          </li>
-          <li className="white d" onClick={this.playSound.bind(this, 'D', this.state.octave)}></li>
-          <li className="black ds" onClick={this.playSound.bind(this, 'D#', this.state.octave)}></li>
-          <li className="white e" onClick={this.playSound.bind(this, 'E', this.state.octave)}></li>
-          <li className="white f" onClick={this.playSound.bind(this, 'F', this.state.octave)}></li>
-          <li className="black fs" onClick={this.playSound.bind(this, 'F#', this.state.octave)}></li>
-          <li className="white g" onClick={this.playSound.bind(this, 'G', this.state.octave)}></li>
-          <li className="black gs" onClick={this.playSound.bind(this, 'G#', this.state.octave)}></li>
-          <li className="white a" onClick={this.playSound.bind(this, 'A', this.state.octave)}></li>
-          <li className="black as" onClick={this.playSound.bind(this, 'A#', this.state.octave)}></li>
-          <li className="white b" onClick={this.playSound.bind(this, 'B', this.state.octave)}></li>
-        </ul> */}
       </div>
     )
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PianoKeyboard from './PianoKeyboard';
+import PianoKeyboard from '../PianoKeyboard/PianoKeyboard';
 import './App.css';
 
 class App extends Component {
@@ -7,6 +7,7 @@ class App extends Component {
     return (
       <div className="App">
         <PianoKeyboard />
+        
       </div>
     );
   }
