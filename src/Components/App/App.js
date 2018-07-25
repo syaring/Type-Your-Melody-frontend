@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PianoKeyboard from '../PianoKeyboard/PianoKeyboard';
 import Settings from '../Settings/Settings';
+import Sheet from '../Sheet/Sheet'
+
 import './App.css';
 
 class App extends Component {
@@ -13,23 +15,13 @@ class App extends Component {
     }
   }
 
-  changeOctaveValue (value) {
-    if (value === '+') {
-
-    } else if (value === '-') {
-
-    }
-  }
-
-  changeBPMValue (value) {
-
-  }
   render() {
     return (
       <div className="App">
         <PianoKeyboard />
-        <Settings default={100} max={200} min={80}/>
-        <Settings />
+        octave <Settings default={this.state.octave} max={7} min={2}/>
+        BPM <Settings default={this.state.bpm} max={200} min={80}/>
+        <Sheet />
       </div>
     );
   }

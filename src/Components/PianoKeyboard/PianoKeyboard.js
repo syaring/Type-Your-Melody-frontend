@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './PianoKeyboard.css';
-import _ from 'lodash';
 import PianoKey from '../../Data/PianoKey';
 
 var instrument;
@@ -12,17 +11,17 @@ class PianoKeyboard extends Component {
     this.state = {
       octave: 4,
       duration: 2,
-      sound: 'piano',
+      sound: 'piano', //organ, edm, acoustic
       addClass: false
     }
   }
 
   componentDidMount = () => {
-    window.addEventListener('keyup', this.keyMapping.bind(this));
+    window.addEventListener('keydown', this.keyMapping.bind(this));
   }
 
   componentWillUnmount = () => {
-    window.removeEventListener('keyup', this.keyMapping.bind(this));
+    window.removeEventListener('keydown', this.keyMapping.bind(this));
   }
 
   playSound(note, octave, ev) {
@@ -31,7 +30,7 @@ class PianoKeyboard extends Component {
   }
 
   keyMapping(ev) {
-    switch(ev.key){
+    switch (ev.key) {
       case 'q': this.playSound('C', this.state.octave - 1); break;
       case '2': this.playSound('C#', this.state.octave - 1); break;
       case 'w': this.playSound('D', this.state.octave - 1); break;
@@ -78,7 +77,7 @@ class PianoKeyboard extends Component {
 
   render() {
     let keys = [];
-
+    
     for (var i = this.state.octave - 1 ; i <= this.state.octave + 1; i ++) {
       PianoKey.map((key, index) => {
         keys.push(
