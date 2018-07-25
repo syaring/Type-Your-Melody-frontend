@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import './PianoKeyboard.css';
 import _ from 'lodash';
-import PianoKey from '../Data/PianoKey';
+import PianoKey from '../../Data/PianoKey';
 
 var instrument;
+
 class PianoKeyboard extends Component {
   constructor(props) {
     super(props);
