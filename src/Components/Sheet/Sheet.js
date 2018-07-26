@@ -60,11 +60,11 @@ class Sheet extends Component {
             ]
           })
           .addClef('treble');
-          
-          this.setState({
-            count: this.state.count + 1
-          });
         } else {
+          if (this.state.count % 4 === 0) {
+            this.x = 20;
+            this.y += 150;
+          }
           this.system = this.makeSystem(200);
           this.system.addStave({
             voices: [
@@ -72,6 +72,10 @@ class Sheet extends Component {
             ]
           });
         }
+
+        this.setState({
+          count: this.state.count + 1
+        });
       }
     }
     
