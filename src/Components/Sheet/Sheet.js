@@ -13,7 +13,8 @@ class Sheet extends Component {
     super(props);
 
     this.state = {
-      count: 1
+      count: 1,
+      notes: ''
     };
 
     this.vf;
@@ -21,6 +22,7 @@ class Sheet extends Component {
     this.x = 120;
     this.y = 80;
     this.makeSystem;
+    this.system;
   }
 
 
@@ -44,27 +46,32 @@ class Sheet extends Component {
   }
 
   componentDidUpdate() {
+    if(this.props.notes !== this.state.notes) {
+      this.setState({
+        notes: this.props.notes
+      });
 
-    if(this.props.notes.length !== 0) {
-      if(this.state.count === 1) {
-        var system = this.makeSystem(300);
-        system.addStave({
-          voices: [
-            this.score.voice(this.score.notes(this.props.notes, {stem: 'up'}))
-          ]
-        })
-        .addClef('treble');
-        
-        this.setState({
-          count: this.state.count + 1
-        });
-      } else {
-        var system = this.makeSystem(200);
-        system.addStave({
-          voices: [
-            this.score.voice(this.score.notes(this.props.notes, {stem: 'up'}))
-          ]
-        });
+      if(this.state.notes.length !== 0) {
+        if(this.state.count === 1) {
+          this.system = this.makeSystem(300);
+          this.system.addStave({
+            voices: [
+              this.score.voice(this.score.notes(this.state.notes, {stem: 'up'}))
+            ]
+          })
+          .addClef('treble');
+          
+          this.setState({
+            count: this.state.count + 1
+          });
+        } else {
+          this.system = this.makeSystem(200);
+          this.system.addStave({
+            voices: [
+              this.score.voice(this.score.notes(this.state.notes, {stem: 'up'}))
+            ]
+          });
+        }
       }
     }
     

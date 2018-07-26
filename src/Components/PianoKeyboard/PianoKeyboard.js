@@ -248,6 +248,7 @@ class PianoKeyboard extends Component {
       fourMeter: ''
     });
   }
+  
   render() {
     let keys = [];
     
