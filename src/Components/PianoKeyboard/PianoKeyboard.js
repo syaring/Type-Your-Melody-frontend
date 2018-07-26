@@ -126,105 +126,116 @@ class PianoKeyboard extends Component {
         note = 'F'+(this.state.octave).toString();
         this.pressedKey(note);
         break;
-      case 'a':
+      case '=':
         this.playSound('F#', this.state.octave);
         note = 'F#'+(this.state.octave).toString();
         this.pressedKey(note);
         break;
-      case 'z':
+      case ']':
         this.playSound('G', this.state.octave);
         note = 'G'+(this.state.octave).toString();
         this.pressedKey(note);
         break;
-      case 's':
+      case 'a':
         this.playSound('G#', this.state.octave);
         note = 'G#'+(this.state.octave).toString();
         this.pressedKey(note);
         break;
-      case 'x':
+      case 'z':
         this.playSound('A', this.state.octave);
         note = 'A'+(this.state.octave).toString();
         this.pressedKey(note);
         break;
-      case 'd':
+      case 's':
         this.playSound('A#', this.state.octave);
         note = 'A#'+(this.state.octave).toString();
         this.pressedKey(note);
         break;
-      case 'c':
+      case 'x':
         this.playSound('B', this.state.octave);
         note = 'B'+(this.state.octave).toString();
         this.pressedKey(note);
         break;
 
-      case 'v':
+      case 'c':
         this.playSound('C', this.state.octave + 1);
         note = 'C'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case 'g':
+      case 'f':
         this.playSound('C#', this.state.octave + 1);
         note = 'C#'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case 'b':
+      case 'v':
         this.playSound('D', this.state.octave + 1);
         note = 'D'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case 'h':
+      case 'g':
         this.playSound('D#', this.state.octave + 1);
         note = 'D#'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case 'n':
+      case 'b':
         this.playSound('E', this.state.octave + 1);
         note = 'E'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case 'm':
+      case 'n':
         this.playSound('F', this.state.octave + 1);
         note = 'F'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case 'k':
+      case 'j':
         this.playSound('F#', this.state.octave + 1);
         note = 'F#'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case ',':
+      case 'm':
         this.playSound('G', this.state.octave + 1);
         note = 'G'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case 'l':
+      case 'k':
         this.playSound('G#', this.state.octave + 1);
         note = 'G#'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case '.':
+      case ',':
         this.playSound('A', this.state.octave + 1);
         note = 'A'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case ';':
+      case 'l':
         this.playSound('A#', this.state.octave + 1);
         note = 'A#'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      case '/':
+      case '.':
         this.playSound('B', this.state.octave + 1);
         note = 'B'+(this.state.octave + 1).toString();
         this.pressedKey(note);
         break;
-      
+      case ';':
+      note = 'rest'
+      this.pressedKey(note);
+      break;
       // case '=': this.setState({octave: this.state.octave + 1}); break;
       // case '-': this.setState({octave: this.state.octave - 1}); break;
     }
   }
 
   pressedKey(key) {
-    let parseKey = key+"/4";
+
+    
+    let parseKey;
+    
+    if(key==='rest') {
+      parseKey = "B4/4/r"
+    } else {
+      parseKey = key+"/4";
+    }
 
     //console.log(parseKey);
     this.setState({
@@ -248,7 +259,7 @@ class PianoKeyboard extends Component {
       fourMeter: ''
     });
   }
-  
+
   render() {
     let keys = [];
     
