@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './PianoKeyboard.css';
 import PianoKey from '../../Data/PianoKey';
 import Sheet from '../Sheet/Sheet'
+import axios from 'axios';
 
 var instrument;
 
@@ -260,6 +261,18 @@ class PianoKeyboard extends Component {
     });
   }
 
+  createPDF() {
+    var notesData = document.getElementById('sheet').innerHTML;
+  
+    axios.post('http://localhost:8080/toPDF', {
+      tagData: notesData
+    }).then ( (msg) => {
+       //console.log(msg);
+    }
+    );
+    
+  }
+
   render() {
     let keys = [];
     
@@ -283,6 +296,7 @@ class PianoKeyboard extends Component {
         <div className="sheet">
           <Sheet notes={this.state.fourMeter} />
         </div>
+        <button onClick={this.createPDF.bind(this)}>Done And Create PDF</button>
       </div>
     )
   }
