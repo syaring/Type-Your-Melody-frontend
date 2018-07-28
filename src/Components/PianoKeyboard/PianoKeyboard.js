@@ -266,8 +266,8 @@ class PianoKeyboard extends Component {
   
     axios.post('http://localhost:8080/toPDF', {
       tagData: notesData
-    }).then ( (msg) => {
-       //console.log(msg);
+    }).then ((res) => {
+      console.log(res.data.url);
     }
     );
     
