@@ -16,7 +16,8 @@ class PianoKeyboard extends Component {
       sound: 'piano', //organ, edm, acoustic
       addClass: false,
       keys: [],
-      fourMeter: ''
+      fourMeter: '',
+      pdfUrl: null
     }
   }
 
@@ -268,6 +269,9 @@ class PianoKeyboard extends Component {
       tagData: notesData
     }).then ((res) => {
       console.log(res.data.url);
+      this.setState({
+        pdfUrl: res.data.url
+      })
     }
     );
     
@@ -297,6 +301,11 @@ class PianoKeyboard extends Component {
           <Sheet notes={this.state.fourMeter} />
         </div>
         <button onClick={this.createPDF.bind(this)}>Done And Create PDF</button>
+        {
+          this.state.pdfUrl &&
+          <iframe id="pdf-file" src={this.state.pdfUrl}>
+          </iframe>
+        }
       </div>
     )
   }
