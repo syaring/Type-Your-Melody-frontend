@@ -68,3 +68,21 @@ ul li:first-child {
 ul li:last-child {
   border-radius:0 5px 5px 5px;
 }
+
+.share-btn {
+  width: 30px;
+  display: inline-block;
+  position: absolute;
+}
+
+#pdf-file {
+  display: inline-block;
+}
+
+.social-btn {
+  display: inline-block;
+}
+
+.social-btn:hover {
+  cursor: pointer;
+}

@@ -4,6 +4,8 @@ import PianoKey from '../../Data/PianoKey';
 import Sheet from '../Sheet/Sheet'
 import axios from 'axios';
 
+import shareBtn from '../../img/share.png';
+import Share from '../Share/Share';
 var instrument;
 
 class PianoKeyboard extends Component {
@@ -17,7 +19,8 @@ class PianoKeyboard extends Component {
       addClass: false,
       keys: [],
       fourMeter: '',
-      pdfUrl: null
+      pdfUrl: null,
+      activateShare: false
     }
   }
 
@@ -262,6 +265,16 @@ class PianoKeyboard extends Component {
     });
   }
 
+  onClickShareButton() {
+    this.state.activateShare ? 
+      this.setState({
+        activateShare: false
+      }) :
+      this.setState({
+        activateShare: true
+      });
+  }
+
   createPDF() {
 
     if(this.props.isLoggedIn) {
@@ -306,8 +319,15 @@ class PianoKeyboard extends Component {
         <button onClick={this.createPDF.bind(this)}>Done And Create PDF</button>
         {
           this.state.pdfUrl &&
-          <iframe id="pdf-file" src={this.state.pdfUrl}>
-          </iframe>
+          <div className="pdf-viewer">
+            <iframe id="pdf-file" src={this.state.pdfUrl}></iframe>
+            <img className="share-btn" src={shareBtn} onClick={this.onClickShareButton.bind(this)}/>
+            { this.state.activateShare &&
+              <div className="social-btn">
+                <Share url={this.state.pdfUrl}/>
+              </div>
+            }
+          </div>
         }
       </div>
     )

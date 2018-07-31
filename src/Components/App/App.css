@@ -39,3 +39,11 @@
   float: right;
   width: 50px;
 }
+
+.MyInfo {
+  font-family: 'Roboto';
+}
+
+.MyPhoto:hover, .googleBtn:hover, .Login:hover {
+  cursor: pointer;
+}

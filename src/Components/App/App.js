@@ -126,13 +126,13 @@ class App extends Component {
                       on="click"
                     >
                     <div className="MyInfo">
-                      name: {this.state.userName}
+                      Hello, {this.state.userName}!
                     </div>
                     </Popup>
                   }
-                  octave <Settings default={this.state.octave} max={7} min={2}/>
-                  BPM <Settings default={this.state.bpm} max={200} min={80}/>
-                  <PianoKeyboard isLoggedIn={this.state.isLoggedIn}/>
+                  octave <Settings default={this.state.octave} max={7} min={2} />
+                  BPM <Settings default={this.state.bpm} max={200} min={80} />
+                  <PianoKeyboard isLoggedIn={this.state.isLoggedIn} />
                 </div>
               );
             }}
