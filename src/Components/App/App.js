@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import Popup from 'reactjs-popup';
+import firebase from 'firebase';
 
 import PianoKeyboard from '../PianoKeyboard/PianoKeyboard';
 import Settings from '../Settings/Settings';
-import NaverLogin from '../NaverLogin/NaverLogin';
-// import Sheet from '../Sheet/Sheet'
 
+import glogo from '../../img/google-login.png';
 import './App.css';
+
+var config = {
+  apiKey: "AIzaSyBCrvBNP_x6Dxcy_b9rFN72c-smrvrvIQg",
+  authDomain: "type-your-melody-1532934012672.firebaseapp.com",
+  databaseURL: "https://type-your-melody-1532934012672.firebaseio.com",
+  projectId: "type-your-melody-1532934012672",
+  storageBucket: "type-your-melody-1532934012672.appspot.com",
+  messagingSenderId: "125564717661"
+};
+
+firebase.initializeApp(config);
+
+const provider = new firebase.auth.GoogleAuthProvider();
 
 class App extends Component {
   constructor(props) {
@@ -14,22 +28,68 @@ class App extends Component {
 
     this.state = {
       bpm: 100,
-      octave: 4
+      octave: 4,
+      isLoggedIn: false,
+      userName: null,
+      userEmail: null,
+      userPhotoUrl: null
     }
   }
 
-  initNaverLoginModule() {
-    this.naverLogin = new window.naver.LoginWithNaverId({
-			clientId: "vZFjNbw_PhQqHlvzxA98",
-			callbackUrl: "http://localhost:3000/",
-			isPopup: false, /* 팝업을 통한 연동처리 여부 */
-			loginButton: {color: "green", type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */
-		});
-    this.naverLogin.init();
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user)=>{
+      if (user) {
+        // User is signed in.
+        var displayName = user.displayName;
+        var email = user.email;
+        var emailVerified = user.emailVerified;
+        var photoURL = user.photoURL;
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        var providerData = user.providerData;
 
-    this.naverLogin.getLoginStatus((status) => {
-      console.log(status);
-      console.log(this.naverLogin.user);
+        console.log(user);
+        this.setState({
+          isLoggedIn: true,
+          userName: user.displayName,
+          userEmail: user.email,
+          userPhotoUrl: user.photoURL
+        });
+      } else {
+        // User is signed out.
+        // ...
+      }
+    });
+  }
+
+  triggerGoogleAuthentication() {
+    firebase.auth().signInWithPopup(provider).then((result) => {
+      var token = result.credential.accessToken;
+      var user = result.user;
+
+      console.log(user);
+      this.setState({
+        isLoggedIn: true,
+        userName: user.displayName,
+        userEmail: user.email,
+        userPhotoUrl: user.photoURL
+      });
+      
+    }).catch(function(error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;
+      var credential = error.credential;
+    });
+  }
+  
+  logoutGoogleAuthentication() {
+    firebase.auth().signOut().then(()=>{
+      this.setState({
+        isLoggedIn: false
+      });
+    }).catch(function(error) {
+      // An error happened.
     });
   }
 
@@ -41,10 +101,38 @@ class App extends Component {
             render={()=>{
               return (
                 <div>
-                  <NaverLogin naverLoginButtonReady={this.initNaverLoginModule.bind(this)} />
-                  <PianoKeyboard />
+                  <Popup
+                    trigger={!this.state.isLoggedIn ?
+                      <button className="Login">Login</button> :
+                      <button className="Login">Logout</button>
+                    }
+                    position="bottom center"
+                    on="click"
+                  >
+                    {!this.state.isLoggedIn ?
+                      <button className="googleBtn" onClick={this.triggerGoogleAuthentication.bind(this)}>
+                        <img className="googleLogo"src={glogo}/>
+                        <div className="googleText">Login with Google</div>
+                      </button> : 
+                      <button className="googleBtn" onClick={this.logoutGoogleAuthentication.bind(this)}>
+                        <img className="googleLogo" src={glogo}/>
+                        <div className="googleText">Logout from Google</div>
+                        </button>
+                    }
+                  </Popup>
+                  { this.state.isLoggedIn &&
+                    <Popup trigger={<img className="MyPhoto" src={this.state.userPhotoUrl} />}
+                      position="bottom center"
+                      on="click"
+                    >
+                    <div className="MyInfo">
+                      name: {this.state.userName}
+                    </div>
+                    </Popup>
+                  }
                   octave <Settings default={this.state.octave} max={7} min={2}/>
                   BPM <Settings default={this.state.bpm} max={200} min={80}/>
+                  <PianoKeyboard isLoggedIn={this.state.isLoggedIn}/>
                 </div>
               );
             }}

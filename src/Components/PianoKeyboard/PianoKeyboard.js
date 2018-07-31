@@ -263,18 +263,21 @@ class PianoKeyboard extends Component {
   }
 
   createPDF() {
-    var notesData = document.getElementById('sheet').innerHTML;
-  
-    axios.post('http://localhost:8080/toPDF', {
-      tagData: notesData
-    }).then ((res) => {
-      console.log(res.data.url);
-      this.setState({
-        pdfUrl: res.data.url
-      })
-    }
-    );
+
+    if(this.props.isLoggedIn) {
+      var notesData = document.getElementById('sheet').innerHTML;
     
+      axios.post('http://localhost:8080/toPDF', {
+        tagData: notesData
+      }).then ((res) => {
+        console.log(res.data.url);
+        this.setState({
+          pdfUrl: res.data.url
+        });
+      });
+    } else {
+      alert("로그인 후 이용하실 수 있습니다!");
+    }
   }
 
   render() {

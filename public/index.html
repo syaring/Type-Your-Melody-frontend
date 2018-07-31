@@ -20,7 +20,19 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <script src="%PUBLIC_URL%/audiosynth.js"></script>
-    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBCrvBNP_x6Dxcy_b9rFN72c-smrvrvIQg",
+        authDomain: "type-your-melody-1532934012672.firebaseapp.com",
+        databaseURL: "https://type-your-melody-1532934012672.firebaseio.com",
+        projectId: "type-your-melody-1532934012672",
+        storageBucket: "type-your-melody-1532934012672.appspot.com",
+        messagingSenderId: "125564717661"
+      };
+      firebase.initializeApp(config);
+    </script>
     <title>React App</title>
   </head>
   <body>
