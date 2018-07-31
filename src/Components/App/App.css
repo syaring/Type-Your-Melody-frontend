@@ -2,16 +2,45 @@
   text-align: center;
 }
 
+.Header {
+  margin: 20px 10px 30px 10px;
+}
+
+.Title-text {
+  font-family: 'Abril Fatface';
+  width: 65%;
+  float: left;
+  font-size: 40px;
+  margin: 0px 0px 30px 0px;
+}
+
+.text {
+  float: right;
+}
+
+.User {
+  float: right;
+  width: 35%;
+}
+
+.Login-pop {
+  display: inline-block;
+  padding: 0px 20px 0px 20px;
+}
+
+.User-pop {
+  display: inline-block;
+}
+
 .Login {
   font-family: 'Roboto Mono', monospace;
-  font-size: 30px;
+  font-size: 20px;
   float: right;
   width: auto;
-  height: 50px;
-  background: purple;
+  height: auto;
+  background: #B300B3;
   color: white;
   border-radius: 20px;
-  margin: 30px 30px 0px 0px;
 }
 
 .googleBtn {
@@ -22,7 +51,7 @@
 
 .googleLogo {
   display: inline-block;
-  width: 50px;
+  width: 40px;
 }
 
 .googleText {
@@ -35,7 +64,6 @@
 
 .MyPhoto {
   border-radius: 50%;
-  margin: 30px 30px 0px 0px;
   float: right;
   width: 50px;
 }
@@ -46,4 +74,13 @@
 
 .MyPhoto:hover, .googleBtn:hover, .Login:hover {
   cursor: pointer;
+}
+
+.Piano {
+  display: inline-block;
+}
+
+.Octave, .BPM {
+  display: inline-block;
+  margin: 0px 20px 0px 20px;
 }

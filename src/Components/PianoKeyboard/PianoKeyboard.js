@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import './PianoKeyboard.css';
+import Settings from '../Settings/Settings';
 import PianoKey from '../../Data/PianoKey';
 import Sheet from '../Sheet/Sheet'
 import axios from 'axios';
 
 import shareBtn from '../../img/share.png';
 import Share from '../Share/Share';
+import './PianoKeyboard.css';
+
 var instrument;
 
 class PianoKeyboard extends Component {
@@ -13,6 +15,7 @@ class PianoKeyboard extends Component {
     super(props);
 
     this.state = {
+      bpm: 100,
       octave: 4,
       duration: 2,
       sound: 'piano', //organ, edm, acoustic
@@ -226,8 +229,9 @@ class PianoKeyboard extends Component {
       note = 'rest'
       this.pressedKey(note);
       break;
-      // case '=': this.setState({octave: this.state.octave + 1}); break;
-      // case '-': this.setState({octave: this.state.octave - 1}); break;
+
+      case 'ArrowUp': this.setState({octave: this.state.octave + 1}); break;
+      case 'ArrowDown': this.setState({octave: this.state.octave - 1}); break;
     }
   }
 
@@ -293,6 +297,30 @@ class PianoKeyboard extends Component {
     }
   }
 
+  incrementOctaveValue() {
+    this.setState({
+      octave: this.state.octave + 1
+    });
+  }
+
+  decrementOctaveValue() {
+    this.setState({
+      octave: this.state.octave - 1
+    });
+  } 
+
+  incrementBPMValue() {
+    this.setState({
+      bpm: this.state.bpm + 1
+    });
+  }
+
+  decrementBPMValue() {
+    this.setState({
+      bpm: this.state.bpm - 1
+    });
+  }
+
   render() {
     let keys = [];
     
@@ -310,7 +338,29 @@ class PianoKeyboard extends Component {
     }
     return (
       <div className="PianoKeyboard">
-        <ul className="set">
+        <div className="Setting">
+          <div className="Octave">
+            <Settings
+              value={this.state.octave}
+              max={7}
+              min={2}
+              increment={this.incrementOctaveValue.bind(this)}
+              decrement={this.decrementOctaveValue.bind(this)}
+            /><br/>
+            OCTAVE : {this.state.octave - 1} to {this.state.octave + 1}
+          </div>
+          <div className="BPM">
+            <Settings
+              value={this.state.bpm}
+              max={200}
+              min={80}
+              increment={this.incrementBPMValue.bind(this)}
+              decrement={this.decrementBPMValue.bind(this)}
+            /><br/>
+            BPM
+          </div>
+        </div>
+        <ul className="keys">
           {keys}
         </ul>
         <div className="sheet">
@@ -321,7 +371,9 @@ class PianoKeyboard extends Component {
           this.state.pdfUrl &&
           <div className="pdf-viewer">
             <iframe id="pdf-file" src={this.state.pdfUrl}></iframe>
-            <img className="share-btn" src={shareBtn} onClick={this.onClickShareButton.bind(this)}/>
+            <img className="share-btn" 
+              src={shareBtn}
+              onClick={this.onClickShareButton.bind(this)}/>
             { this.state.activateShare &&
               <div className="social-btn">
                 <Share url={this.state.pdfUrl}/>

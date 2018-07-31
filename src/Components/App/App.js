@@ -4,7 +4,7 @@ import Popup from 'reactjs-popup';
 import firebase from 'firebase';
 
 import PianoKeyboard from '../PianoKeyboard/PianoKeyboard';
-import Settings from '../Settings/Settings';
+
 
 import glogo from '../../img/google-login.png';
 import './App.css';
@@ -27,8 +27,6 @@ class App extends Component {
     super(props);
 
     this.state = {
-      bpm: 100,
-      octave: 4,
       isLoggedIn: false,
       userName: null,
       userEmail: null,
@@ -56,8 +54,6 @@ class App extends Component {
           userPhotoUrl: user.photoURL
         });
       } else {
-        // User is signed out.
-        // ...
       }
     });
   }
@@ -95,50 +91,51 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
         <div className="App">
-          <Route exact path="/"
-            render={()=>{
-              return (
-                <div>
-                  <Popup
-                    trigger={!this.state.isLoggedIn ?
-                      <button className="Login">Login</button> :
-                      <button className="Login">Logout</button>
-                    }
+          <div className="Header">
+            <div className="Title-text">
+              <div className="text">🎶 Type Your Melody 🎶</div>
+            </div>
+            <div className="User">
+              { this.state.isLoggedIn &&
+                <div className="User-pop">
+                  <Popup trigger={<img className="MyPhoto" src={this.state.userPhotoUrl} />}
                     position="bottom center"
                     on="click"
                   >
-                    {!this.state.isLoggedIn ?
-                      <button className="googleBtn" onClick={this.triggerGoogleAuthentication.bind(this)}>
-                        <img className="googleLogo"src={glogo}/>
-                        <div className="googleText">Login with Google</div>
-                      </button> : 
-                      <button className="googleBtn" onClick={this.logoutGoogleAuthentication.bind(this)}>
-                        <img className="googleLogo" src={glogo}/>
-                        <div className="googleText">Logout from Google</div>
-                        </button>
-                    }
+                  <div className="MyInfo">
+                    Hello, {this.state.userName}!
+                  </div>
                   </Popup>
-                  { this.state.isLoggedIn &&
-                    <Popup trigger={<img className="MyPhoto" src={this.state.userPhotoUrl} />}
-                      position="bottom center"
-                      on="click"
-                    >
-                    <div className="MyInfo">
-                      Hello, {this.state.userName}!
-                    </div>
-                    </Popup>
-                  }
-                  octave <Settings default={this.state.octave} max={7} min={2} />
-                  BPM <Settings default={this.state.bpm} max={200} min={80} />
-                  <PianoKeyboard isLoggedIn={this.state.isLoggedIn} />
                 </div>
-              );
-            }}
-          />
+              }
+              <div className="Login-pop">
+                <Popup
+                  trigger={!this.state.isLoggedIn ?
+                    <button className="Login">Login</button> :
+                    <button className="Login">Logout</button>
+                  }
+                  position="bottom center"
+                  on="click"
+                >
+                {!this.state.isLoggedIn ?
+                  <button className="googleBtn" onClick={this.triggerGoogleAuthentication.bind(this)}>
+                    <img className="googleLogo"src={glogo}/>
+                    <div className="googleText">Login with Google</div>
+                  </button> : 
+                  <button className="googleBtn" onClick={this.logoutGoogleAuthentication.bind(this)}>
+                    <img className="googleLogo" src={glogo}/>
+                    <div className="googleText">Logout from Google</div>
+                  </button>
+                  }
+                </Popup>
+              </div>
+            </div>
+          </div>
+          <div className="Piano">
+            <PianoKeyboard isLoggedIn={this.state.isLoggedIn} />
+          </div>
         </div>
-      </BrowserRouter>
     );
   }
 }
