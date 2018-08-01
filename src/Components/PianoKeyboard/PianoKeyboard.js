@@ -24,9 +24,8 @@ class PianoKeyboard extends Component {
       fourMeter: '',
       pdfUrl: null,
       activateShare: false,
-      currentKey: '',
-      isKeyPressed: false,
-      play: false
+      currentKey: null,
+      isKeyPressed: false
     }
   }
 
@@ -359,19 +358,23 @@ class PianoKeyboard extends Component {
 
   render() {
     let keys = [];
-    
-    for (var i = this.state.octave - 1 ; i <= this.state.octave + 1; i ++) {
-      PianoKey.map((key, index) => {
+    let count = 0;
+    let octaveSet = -2;
+    PianoKey.map((key, index) => {
+      if((count % 12) === 0) {
+        octaveSet ++;
+      }
         keys.push(
           <li
-            key={`${key.note}`+'/'+`${i}`}
+            key={`${key.note}`+'/'+`${this.state.octave + octaveSet}`}
             className={`${key.color} ${key.value}`}
-            onMouseDown={this.playSound.bind(this, key.note, i)}
+            onMouseDown={this.playSound.bind(this, key.note, this.state.octave + octaveSet)}
           >
+            <div className="key-maps">{key.keyboard}</div>
           </li>
         );
-      });
-    }
+      count ++;
+    });
 
     return (
       <div className="PianoKeyboard">
