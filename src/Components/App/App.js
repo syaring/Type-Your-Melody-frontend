@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import firebase from 'firebase';
 
 import PianoKeyboard from '../PianoKeyboard/PianoKeyboard';
-
 
 import glogo from '../../img/google-login.png';
 import './App.css';

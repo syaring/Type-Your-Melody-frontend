@@ -64,7 +64,6 @@ class PianoKeyboard extends Component {
         currentKey: ev.key,
         isKeyPressed: true
       });
-      console.log(ev.key);
 
       switch (ev.key) {
         case 'q':
@@ -250,9 +249,9 @@ class PianoKeyboard extends Component {
           this.pressedKey(note);
           break;
         case ';':
-        note = 'rest'
-        this.pressedKey(note);
-        break;
+          note = 'rest'
+          this.pressedKey(note);
+          break;
 
         case 'ArrowRight':
           if(this.state.octave < 7) {
@@ -279,17 +278,17 @@ class PianoKeyboard extends Component {
 
     this.setState({
       keys: [...this.state.keys, parseKey]
+      }, () => {
+        if(this.state.keys.length === 4) {
+          let keysToString = this.state.keys.toString();
+
+          this.setState({
+            fourMeter: keysToString
+          }, () => {
+             this.setInitialize();
+          });
+      }
     });
-
-    if(this.state.keys.length === 4) {
-      let keysToString = this.state.keys.toString();
-
-      this.setState({
-        fourMeter: keysToString
-      });
-
-      this.setInitialize();
-    }
   }
 
   setInitialize() {
@@ -350,10 +349,10 @@ class PianoKeyboard extends Component {
     });
   }
 
-  test(ev) {
-    if(ev.key === '1') {
-      this.playSound('B', this.state.octave + 1);
-    }
+  mousePlay(note, octave) {
+    this.playSound(note, octave);
+    let key = (note+octave).toString();
+    this.pressedKey(key);
   }
 
   render() {
@@ -368,7 +367,7 @@ class PianoKeyboard extends Component {
           <li
             key={`${key.note}`+'/'+`${this.state.octave + octaveSet}`}
             className={`${key.color} ${key.value}`}
-            onMouseDown={this.playSound.bind(this, key.note, this.state.octave + octaveSet)}
+            onClick={this.mousePlay.bind(this, key.note, this.state.octave + octaveSet)}
           >
             <div className="key-maps">{key.keyboard}</div>
           </li>

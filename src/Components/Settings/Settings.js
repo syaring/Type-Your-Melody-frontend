@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import minus from '../../img/minus.png'
 import plus from '../../img/plus.png'
-import _ from 'lodash';
 
 import './Settings.css';
 
