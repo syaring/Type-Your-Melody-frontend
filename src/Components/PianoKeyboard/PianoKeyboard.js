@@ -23,16 +23,21 @@ class PianoKeyboard extends Component {
       keys: [],
       fourMeter: '',
       pdfUrl: null,
-      activateShare: false
+      activateShare: false,
+      currentKey: '',
+      isKeyPressed: false,
+      play: false
     }
   }
 
   componentDidMount = () => {
-    window.addEventListener('keydown', this.keyMapping.bind(this));
+    window.addEventListener('keydown', this.keyDownMapping.bind(this));
+    window.addEventListener('keyup', this.keyUpMapping.bind(this));
   }
 
   componentWillUnmount = () => {
-    window.removeEventListener('keydown', this.keyMapping.bind(this));
+    window.removeEventListener('keydown', this.keyDownMapping.bind(this));
+    window.removeEventListener('keyup', this.keyUpMapping.bind(this));
   }
 
   playSound(note, octave, ev) {
@@ -40,204 +45,231 @@ class PianoKeyboard extends Component {
     instrument.play(note, octave, 3);
   }
 
-  keyMapping(ev) {
+  keyUpMapping (ev) {
+    if(!this.state.isKeyPressed){
+      this.setState({
+        isKeyPressed: false
+      });
+    } else if(ev.key === this.state.currentKey) {
+      this.setState({
+        currentKey: null
+      });
+    }
+  }
+
+  keyDownMapping(ev) {
     let note;
-    switch (ev.key) {
-      case 'q':
-        this.playSound('C', this.state.octave - 1); 
-        note = 'C'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case '2':
-        this.playSound('C#', this.state.octave - 1);
-        note = 'C#'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'w': 
-        this.playSound('D', this.state.octave - 1);
-        note = 'D'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case '3':
-        this.playSound('D#', this.state.octave - 1);
-        note = 'D#'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'e':
-        this.playSound('E', this.state.octave - 1);
-        note = 'E'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'r':
-        this.playSound('F', this.state.octave - 1);
-        note = 'F'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case '5':
-        this.playSound('F#', this.state.octave - 1);
-        note = 'F#'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case 't':
-        this.playSound('G', this.state.octave - 1);
-        note = 'G'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case '6':
-        this.playSound('G#', this.state.octave - 1);
-        note = 'G#'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'y':
-        this.playSound('A', this.state.octave - 1);
-        note = 'A'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case '7':
-        this.playSound('A#', this.state.octave - 1);
-        note = 'A#'+(this.state.octave - 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'u':
-        this.playSound('B', this.state.octave - 1);
-        note = 'B'+(this.state.octave - 1).toString();
+
+    if((ev.key !== this.state.currentKey) || !this.state.isKeyPressed) {
+      this.setState({
+        currentKey: ev.key,
+        isKeyPressed: true
+      });
+      console.log(ev.key);
+
+      switch (ev.key) {
+        case 'q':
+          this.playSound('C', this.state.octave - 1); 
+          note = 'C'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case '2':
+          this.playSound('C#', this.state.octave - 1);
+          note = 'C#'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'w': 
+          this.playSound('D', this.state.octave - 1);
+          note = 'D'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case '3':
+          this.playSound('D#', this.state.octave - 1);
+          note = 'D#'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'e':
+          this.playSound('E', this.state.octave - 1);
+          note = 'E'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'r':
+          this.playSound('F', this.state.octave - 1);
+          note = 'F'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case '5':
+          this.playSound('F#', this.state.octave - 1);
+          note = 'F#'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case 't':
+          this.playSound('G', this.state.octave - 1);
+          note = 'G'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case '6':
+          this.playSound('G#', this.state.octave - 1);
+          note = 'G#'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'y':
+          this.playSound('A', this.state.octave - 1);
+          note = 'A'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case '7':
+          this.playSound('A#', this.state.octave - 1);
+          note = 'A#'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'u':
+          this.playSound('B', this.state.octave - 1);
+          note = 'B'+(this.state.octave - 1).toString();
+          this.pressedKey(note);
+          break;
+
+        case 'i':
+          this.playSound('C', this.state.octave);
+          note = 'C'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case '9':
+          this.playSound('C#', this.state.octave);
+          note = 'C#'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case 'o':
+          this.playSound('D', this.state.octave);
+          note = 'D'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case '0':
+          this.playSound('D#', this.state.octave);
+          note = 'D#'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case 'p':
+          this.playSound('E', this.state.octave);
+          note = 'E'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case '[':
+          this.playSound('F', this.state.octave);
+          note = 'F'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case '=':
+          this.playSound('F#', this.state.octave);
+          note = 'F#'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case ']':
+          this.playSound('G', this.state.octave);
+          note = 'G'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case 'a':
+          this.playSound('G#', this.state.octave);
+          note = 'G#'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case 'z':
+          this.playSound('A', this.state.octave);
+          note = 'A'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case 's':
+          this.playSound('A#', this.state.octave);
+          note = 'A#'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+        case 'x':
+          this.playSound('B', this.state.octave);
+          note = 'B'+(this.state.octave).toString();
+          this.pressedKey(note);
+          break;
+
+        case 'c':
+          this.playSound('C', this.state.octave + 1);
+          note = 'C'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'f':
+          this.playSound('C#', this.state.octave + 1);
+          note = 'C#'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'v':
+          this.playSound('D', this.state.octave + 1);
+          note = 'D'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'g':
+          this.playSound('D#', this.state.octave + 1);
+          note = 'D#'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'b':
+          this.playSound('E', this.state.octave + 1);
+          note = 'E'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'n':
+          this.playSound('F', this.state.octave + 1);
+          note = 'F'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'j':
+          this.playSound('F#', this.state.octave + 1);
+          note = 'F#'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'm':
+          this.playSound('G', this.state.octave + 1);
+          note = 'G'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'k':
+          this.playSound('G#', this.state.octave + 1);
+          note = 'G#'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case ',':
+          this.playSound('A', this.state.octave + 1);
+          note = 'A'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case 'l':
+          this.playSound('A#', this.state.octave + 1);
+          note = 'A#'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case '.':
+          this.playSound('B', this.state.octave + 1);
+          note = 'B'+(this.state.octave + 1).toString();
+          this.pressedKey(note);
+          break;
+        case ';':
+        note = 'rest'
         this.pressedKey(note);
         break;
 
-      case 'i':
-        this.playSound('C', this.state.octave);
-        note = 'C'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case '9':
-        this.playSound('C#', this.state.octave);
-        note = 'C#'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case 'o':
-        this.playSound('D', this.state.octave);
-        note = 'D'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case '0':
-        this.playSound('D#', this.state.octave);
-        note = 'D#'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case 'p':
-        this.playSound('E', this.state.octave);
-        note = 'E'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case '[':
-        this.playSound('F', this.state.octave);
-        note = 'F'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case '=':
-        this.playSound('F#', this.state.octave);
-        note = 'F#'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case ']':
-        this.playSound('G', this.state.octave);
-        note = 'G'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case 'a':
-        this.playSound('G#', this.state.octave);
-        note = 'G#'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case 'z':
-        this.playSound('A', this.state.octave);
-        note = 'A'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case 's':
-        this.playSound('A#', this.state.octave);
-        note = 'A#'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-      case 'x':
-        this.playSound('B', this.state.octave);
-        note = 'B'+(this.state.octave).toString();
-        this.pressedKey(note);
-        break;
-
-      case 'c':
-        this.playSound('C', this.state.octave + 1);
-        note = 'C'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'f':
-        this.playSound('C#', this.state.octave + 1);
-        note = 'C#'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'v':
-        this.playSound('D', this.state.octave + 1);
-        note = 'D'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'g':
-        this.playSound('D#', this.state.octave + 1);
-        note = 'D#'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'b':
-        this.playSound('E', this.state.octave + 1);
-        note = 'E'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'n':
-        this.playSound('F', this.state.octave + 1);
-        note = 'F'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'j':
-        this.playSound('F#', this.state.octave + 1);
-        note = 'F#'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'm':
-        this.playSound('G', this.state.octave + 1);
-        note = 'G'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'k':
-        this.playSound('G#', this.state.octave + 1);
-        note = 'G#'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case ',':
-        this.playSound('A', this.state.octave + 1);
-        note = 'A'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case 'l':
-        this.playSound('A#', this.state.octave + 1);
-        note = 'A#'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case '.':
-        this.playSound('B', this.state.octave + 1);
-        note = 'B'+(this.state.octave + 1).toString();
-        this.pressedKey(note);
-        break;
-      case ';':
-      note = 'rest'
-      this.pressedKey(note);
-      break;
-
-      case 'ArrowUp': this.setState({octave: this.state.octave + 1}); break;
-      case 'ArrowDown': this.setState({octave: this.state.octave - 1}); break;
+        case 'ArrowRight':
+          if(this.state.octave < 7) {
+            this.incrementOctaveValue();
+          }
+          break;
+        case 'ArrowLeft':
+          if(this.state.octave > 2) {
+            this.decrementOctaveValue();
+          }
+          break;
+      }
     }
   }
 
   pressedKey(key) {
-
-    
     let parseKey;
     
     if(key==='rest') {
@@ -246,7 +278,6 @@ class PianoKeyboard extends Component {
       parseKey = key+"/4";
     }
 
-    //console.log(parseKey);
     this.setState({
       keys: [...this.state.keys, parseKey]
     });
@@ -280,7 +311,6 @@ class PianoKeyboard extends Component {
   }
 
   createPDF() {
-
     if(this.props.isLoggedIn) {
       var notesData = document.getElementById('sheet').innerHTML;
     
@@ -321,6 +351,12 @@ class PianoKeyboard extends Component {
     });
   }
 
+  test(ev) {
+    if(ev.key === '1') {
+      this.playSound('B', this.state.octave + 1);
+    }
+  }
+
   render() {
     let keys = [];
     
@@ -336,6 +372,7 @@ class PianoKeyboard extends Component {
         );
       });
     }
+
     return (
       <div className="PianoKeyboard">
         <div className="Setting">
@@ -360,9 +397,9 @@ class PianoKeyboard extends Component {
             BPM
           </div>
         </div>
-        <ul className="keys">
-          {keys}
-        </ul>
+          <ul className="keys">
+            {keys}
+          </ul>
         <div className="sheet">
           <Sheet notes={this.state.fourMeter} />
         </div>
