@@ -84,3 +84,21 @@
   display: inline-block;
   margin: 0px 20px 0px 20px;
 }
+
+.Etc {
+  float: right;
+  height: 30px;
+}
+
+.Help {
+  width: 20px;
+  display: inline-block;
+  margin: 0px 0px 0px 10px;
+}
+
+.Description {
+  font-family: 'Nanum Myeongjo';
+  font-size: 15px;
+  text-align: left;
+  z-index: -1;
+}

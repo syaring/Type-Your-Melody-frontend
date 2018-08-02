@@ -4,6 +4,7 @@ import PianoKey from '../../Data/PianoKey';
 import Sheet from '../Sheet/Sheet'
 import axios from 'axios';
 
+import Modal from '../Modal/Modal';
 import shareBtn from '../../img/share.png';
 import Share from '../Share/Share';
 import './PianoKeyboard.css';
@@ -25,7 +26,8 @@ class PianoKeyboard extends Component {
       pdfUrl: null,
       activateShare: false,
       currentKey: null,
-      isKeyPressed: false
+      isKeyPressed: false,
+      isModalOpen: false
     }
   }
 
@@ -315,9 +317,9 @@ class PianoKeyboard extends Component {
       axios.post('http://localhost:8080/toPDF', {
         tagData: notesData
       }).then ((res) => {
-        console.log(res.data.url);
         this.setState({
-          pdfUrl: res.data.url
+          pdfUrl: res.data.url,
+          isModalOpen: !this.state.isModalOpen
         });
       });
     } else {
@@ -355,6 +357,12 @@ class PianoKeyboard extends Component {
     this.pressedKey(key);
   }
 
+  toggleModal = () => {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen
+    });
+  }
+
   render() {
     let keys = [];
     let count = 0;
@@ -388,40 +396,39 @@ class PianoKeyboard extends Component {
             /><br/>
             OCTAVE : {this.state.octave - 1} to {this.state.octave + 1}
           </div>
-          <div className="BPM">
-            <Settings
-              value={this.state.bpm}
-              max={200}
-              min={80}
-              increment={this.incrementBPMValue.bind(this)}
-              decrement={this.decrementBPMValue.bind(this)}
-            /><br/>
-            BPM
-          </div>
         </div>
-          <ul className="keys">
-            {keys}
-          </ul>
+        <ul className="keys">
+          {keys}
+        </ul>
         <div className="sheet">
-          <Sheet notes={this.state.fourMeter} />
+          {
+            !this.props.playMode && 
+            <Sheet notes={this.state.fourMeter} />
+          }
         </div>
-        <button onClick={this.createPDF.bind(this)}>Done And Create PDF</button>
-        {
-          this.state.pdfUrl &&
-          <div className="pdf-viewer">
+          {
+            !this.props.playMode && 
+            <button 
+              onClick={this.createPDF.bind(this)}>
+              Done And Create PDF
+            </button>
+          }
+          <Modal
+            show={this.state.isModalOpen}
+            onClose={this.toggleModal}>
+              <img className="share-btn" 
+                  src={shareBtn}
+                  onClick={this.onClickShareButton.bind(this)}/>
+              {
+                this.state.activateShare &&
+                <div className="social-btn">
+                  <Share url={this.state.pdfUrl}/>
+                </div>
+              }
             <iframe id="pdf-file" src={this.state.pdfUrl}></iframe>
-            <img className="share-btn" 
-              src={shareBtn}
-              onClick={this.onClickShareButton.bind(this)}/>
-            { this.state.activateShare &&
-              <div className="social-btn">
-                <Share url={this.state.pdfUrl}/>
-              </div>
-            }
-          </div>
-        }
+          </Modal>
       </div>
-    )
+    );
   }
 }
 

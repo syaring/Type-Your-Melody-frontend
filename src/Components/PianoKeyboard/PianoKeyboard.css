@@ -24,6 +24,7 @@ ul {
   border: 1px solid #160801;
   border-radius: 1em; 
   background: white;
+  z-index: 1;
   box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 }
 
@@ -85,16 +86,20 @@ ul li:last-child {
 
 .share-btn {
   width: 30px;
-  display: inline-block;
-  position: absolute;
+  /* display: inline-block; */
+  position: relative;
+  float: left;
 }
 
 #pdf-file {
   display: inline-block;
+  width: 80%;
+  height: 95%;
 }
 
 .social-btn {
-  display: inline-block;
+  position: absolute;
+  top: 30px;
 }
 
 .social-btn:hover {

@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import Vex from 'vexflow';
 
 const VF = Vex.Flow;
-// var vf;
-// var score;
-// var x = 120;
-// var y = 80;
-// var makeSystem;
 
 class Sheet extends Component {
   constructor(props) {
@@ -28,7 +23,7 @@ class Sheet extends Component {
 
   componentDidMount() {
     this.vf = new VF.Factory({
-      renderer: {elementId: 'sheet', width: 1000, height: 800}
+      renderer: {elementId: 'sheet', width: 1000, height: 500}
     });
 
     this.score = this.vf.EasyScore({ throwOnError: true });
@@ -53,17 +48,17 @@ class Sheet extends Component {
 
       if(this.state.notes.length !== 0) {
         if(this.state.count === 1) {
-          this.system = this.makeSystem(300);
+          this.system = this.makeSystem(250);
           this.system.addStave({
             voices: [
               this.score.voice(this.score.notes(this.state.notes, {stem: 'up'}))
             ]
           })
           .addClef('treble');
-        } else {
+        } else if (this.state.count < 9){
           if (this.state.count % 4 === 0) {
-            this.x = 20;
-            this.y += 150;
+            this.x = 10;
+            this.y += 130;
           }
           this.system = this.makeSystem(200);
           this.system.addStave({
