@@ -314,7 +314,10 @@ class PianoKeyboard extends Component {
     if(this.props.isLoggedIn) {
       var notesData = document.getElementById('sheet').innerHTML;
     
-      axios.post('http://localhost:8080/toPDF', {
+      //로컬서버
+      //axios.post('http://localhost:8080/toPDF', {
+      //aws 서버
+      axios.post('http://typeyourmelody-env.73ikyyt83n.ap-northeast-2.elasticbeanstalk.com/toPDF',{
         tagData: notesData
       }).then ((res) => {
         this.setState({
