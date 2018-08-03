@@ -5,12 +5,6 @@ import plus from '../../img/plus.png'
 import './Settings.css';
 
 class Settings extends Component {
-  constructor (props) {
-    super(props);
-
-    //this.setValue = _.debounce(this.setValue, 500);
-  }
-
   increment () {
     if (this.props.value < this.props.max) {
       this.props.increment();

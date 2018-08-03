@@ -12,12 +12,12 @@ class Sheet extends Component {
       notes: ''
     };
 
-    this.vf;
-    this.score;
+    this.vf = null;
+    this.score = null;
     this.x = 120;
     this.y = 80;
-    this.makeSystem;
-    this.system;
+    this.makeSystem = null;
+    this.system = null;
   }
 
 
