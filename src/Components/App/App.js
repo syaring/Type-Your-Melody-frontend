@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Popup from 'reactjs-popup';
 import firebase from 'firebase/app';
+import 'firebase/storage';
 import 'firebase/database';
 import 'firebase/auth';
 
@@ -34,7 +35,7 @@ class App extends Component {
       userPhotoUrl: null,
       PlayMode: true,
       isModalOpen: false
-    }
+    };
   }
 
   componentDidMount() {
