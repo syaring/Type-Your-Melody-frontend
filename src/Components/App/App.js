@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Popup from 'reactjs-popup';
-import firebase from 'firebase';
-import 'firebase/app';
+import firebase from 'firebase/app';
+import 'firebase/database';
 import 'firebase/auth';
 
 import PianoKeyboard from '../PianoKeyboard/PianoKeyboard';
