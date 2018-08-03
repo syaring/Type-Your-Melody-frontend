@@ -327,13 +327,15 @@ class PianoKeyboard extends Component {
       //로컬서버
       //axios.post('http://localhost:8080/toPDF', {
       //aws 서버
-      axios.post('https://typeyourmelody-env.73ikyyt83n.ap-northeast-2.elasticbeanstalk.com/toPDF',{
+      axios.post('http://typeyourmelody-env.73ikyyt83n.ap-northeast-2.elasticbeanstalk.com/toPDF',{
         tagData: notesData
       }).then ((res) => {
         this.setState({
           pdfUrl: res.data.url,
           isModalOpen: !this.state.isModalOpen
         });
+      }).catch((err) => {
+        console.log(err.response)
       });
     } else {
       alert("로그인 후 이용하실 수 있습니다!");
