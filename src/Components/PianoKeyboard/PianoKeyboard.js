@@ -10,6 +10,7 @@ import Share from '../Share/Share';
 import './PianoKeyboard.css';
 
 var instrument;
+const sounds = ['piano', 'organ', 'edm', 'acoustic'];
 
 class PianoKeyboard extends Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class PianoKeyboard extends Component {
       bpm: 100,
       octave: 4,
       duration: 2,
-      sound: 'piano', //organ, edm, acoustic
+      sound: sounds[0], //organ, edm, acoustic
+      soundValue: 0,
       addClass: false,
       keys: [],
       fourMeter: '',
@@ -34,6 +36,7 @@ class PianoKeyboard extends Component {
   componentDidMount = () => {
     window.addEventListener('keydown', this.keyDownMapping.bind(this));
     window.addEventListener('keyup', this.keyUpMapping.bind(this));
+    this.setSound(0);
   }
 
   componentWillUnmount = () => {
@@ -41,8 +44,15 @@ class PianoKeyboard extends Component {
     window.removeEventListener('keyup', this.keyUpMapping.bind(this));
   }
 
+  setSound(no) {
+    this.setState({
+      sound: sounds[no]
+    }, () => {
+      instrument = window.Synth.createInstrument(this.state.sound);
+    });
+  }
+
   playSound(note, octave, ev) {
-    instrument = window.Synth.createInstrument(this.state.sound);
     instrument.play(note, octave, 3);
   }
 
@@ -342,25 +352,28 @@ class PianoKeyboard extends Component {
     });
   } 
 
-  incrementBPMValue() {
+  incrementSoundValue() {
     this.setState({
-      bpm: this.state.bpm + 1
+      soundValue: this.state.soundValue + 1
+    }, () => {
+      this.setSound(this.state.soundValue)
     });
   }
 
-  decrementBPMValue() {
+  decrementSoundValue() {
     this.setState({
-      bpm: this.state.bpm - 1
+      soundValue: this.state.soundValue - 1
+    }, () => {
+      this.setSound(this.state.soundValue)
     });
   }
-
   mousePlay(note, octave) {
     this.playSound(note, octave);
     let key = (note+octave).toString();
     this.pressedKey(key);
   }
 
-  toggleModal = () => {
+  toggleModal(){
     this.setState({
       isModalOpen: !this.state.isModalOpen
     });
@@ -399,6 +412,16 @@ class PianoKeyboard extends Component {
             /><br/>
             OCTAVE : {this.state.octave - 1} to {this.state.octave + 1}
           </div>
+          <div className="Sounds">
+            <Settings
+              value={this.state.soundValue}
+              max={3}
+              min={0}
+              increment={this.incrementSoundValue.bind(this)}
+              decrement={this.decrementSoundValue.bind(this)}
+            /><br/>
+            Instrument : {this.state.sound}
+          </div>
         </div>
         <ul className="keys">
           {keys}
@@ -418,7 +441,7 @@ class PianoKeyboard extends Component {
           }
           <Modal
             show={this.state.isModalOpen}
-            onClose={this.toggleModal}>
+            onClose={this.toggleModal.bind(this)}>
               <img className="share-btn" 
                   src={shareBtn}
                   onClick={this.onClickShareButton.bind(this)}/>

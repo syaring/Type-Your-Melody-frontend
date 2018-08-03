@@ -80,11 +80,6 @@
   display: inline-block;
 }
 
-.Octave, .BPM {
-  display: inline-block;
-  margin: 0px 20px 0px 20px;
-}
-
 .Etc {
   float: right;
   height: 30px;
