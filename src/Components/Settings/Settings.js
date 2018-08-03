@@ -20,9 +20,9 @@ class Settings extends Component {
   render() {
     return (
       <div className="Settings">
-        <img className="buttons-img" src={minus} onClick={this.decrement.bind(this)} />
+        <img alt="button" className="buttons-img" src={minus} onClick={this.decrement.bind(this)} />
         <div className="value">{this.props.value}</div>
-        <img className="buttons-img" src={plus} onClick={this.increment.bind(this)} />
+        <img alt="button" className="buttons-img" src={plus} onClick={this.increment.bind(this)} />
       </div>
     );
   }

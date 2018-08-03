@@ -442,7 +442,7 @@ class PianoKeyboard extends Component {
           <Modal
             show={this.state.isModalOpen}
             onClose={this.toggleModal.bind(this)}>
-              <img className="share-btn" 
+              <img alt="button" className="share-btn" 
                   src={shareBtn}
                   onClick={this.onClickShareButton.bind(this)}/>
               {

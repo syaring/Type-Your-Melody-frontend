@@ -42,15 +42,6 @@ class App extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user)=>{
       if (user) {
-        // User is signed in.
-        var displayName = user.displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        var providerData = user.providerData;
-
 
         this.setState({
           isLoggedIn: true,
@@ -65,7 +56,6 @@ class App extends Component {
 
   triggerGoogleAuthentication() {
     firebase.auth().signInWithPopup(provider).then((result) => {
-      var token = result.credential.accessToken;
       var user = result.user;
 
       this.setState({
@@ -76,10 +66,7 @@ class App extends Component {
       });
       
     }).catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      var email = error.email;
-      var credential = error.credential;
+      console.log(error.code);
     });
   }
       
@@ -117,7 +104,7 @@ class App extends Component {
               this.state.isLoggedIn &&
               <div className="User-pop">
                 <Popup
-                  trigger={<img className="MyPhoto" src={this.state.userPhotoUrl} />}
+                  trigger={<img alt="userPhoto" className="MyPhoto" src={this.state.userPhotoUrl} />}
                   position="bottom center"
                   on="click"
                 >
@@ -140,11 +127,11 @@ class App extends Component {
               {
                 !this.state.isLoggedIn ?
                 <button className="googleBtn" onClick={this.triggerGoogleAuthentication.bind(this)}>
-                  <img className="googleLogo"src={glogo}/>
+                  <img alt="googleLogo" className="googleLogo"src={glogo}/>
                   <div className="googleText">Login with Google</div>
                 </button> : 
                 <button className="googleBtn" onClick={this.logoutGoogleAuthentication.bind(this)}>
-                  <img className="googleLogo" src={glogo}/>
+                  <img alt="googleLogo" className="googleLogo" src={glogo}/>
                   <div className="googleText">Logout from Google</div>
                 </button>
               }
@@ -160,7 +147,7 @@ class App extends Component {
               <button className="Mode" onClick={this.changeMode.bind(this)}>Go Play Mode</button>
             }
             <Popup
-              trigger={<img className="Help" src={help}/>}
+              trigger={<img alt="helpIcon" className="Help" src={help}/>}
               position="bottom center"
               on="hover"
             >
